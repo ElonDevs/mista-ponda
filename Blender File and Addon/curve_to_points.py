@@ -1,4 +1,4 @@
-bl_info = {
+l_info = {
     "name": "Multi-Curve to Three.js Points Exporter",
     "author": "Gemini",
     "version": (1, 5, 0),
