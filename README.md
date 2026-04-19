@@ -1,4 +1,4 @@
-# Mista Ponda, 10M MC or Extinction
+# Mista Ponda, 10M MC or Hoomans Extinction
 # Credits!!! 💖
 
 - [Intro Screen Font](https://fonts.google.com/specimen/Plus+Jakarta+Sans)
