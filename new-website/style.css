@@ -24,17 +24,3 @@ body {
   height: 100vh;
   background: transparent;
 }
-
-.hint {
-  position: fixed;
-  bottom: 24px;
-  left: 0;
-  right: 0;
-  text-align: center;
-  font-size: 12px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  opacity: 0.55;
-  pointer-events: none;
-  user-select: none;
-}

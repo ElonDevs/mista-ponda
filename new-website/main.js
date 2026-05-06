@@ -19,16 +19,28 @@ const camera = new THREE.PerspectiveCamera(
 camera.position.set(0, 0, 7);
 scene.add(camera);
 
-// ---------- Characters (each texture loaded separately) ----------
-const CHARACTERS = ['regular', 'kpop', 'samurai', 'pirate', 'zombie'];
-const SPACING = 4.2; // distance between characters along X
-const TOTAL = SPACING * CHARACTERS.length;
+// ---------- Characters ----------
+//
+// Each character has an EXACT authored position on the strip.
+// Edit `x` / `y` here to place them precisely.
+// The strip wraps every STRIP_LENGTH units — characters with x outside
+// [0, STRIP_LENGTH) are still fine; they'll be folded in at runtime.
+//
+const STRIP_LENGTH = 21; // world units before the strip repeats
+
+const PLACEMENT = [
+  { name: 'regular', x: 0,    y: 0 },
+  { name: 'kpop',    x: 4.2,  y: 0 },
+  { name: 'samurai', x: 8.4,  y: 0 },
+  { name: 'pirate',  x: 12.6, y: 0 },
+  { name: 'zombie',  x: 16.8, y: 0 },
+];
 
 const loader = new THREE.TextureLoader();
 
-const planes = CHARACTERS.map((name, i) => {
+const planes = PLACEMENT.map(({ name, x, y }) => {
   const texture = loader.load(`./textures/${name}.png`, (tex) => {
-    // once we know the image's real aspect, lock the plane's width to it
+    // lock the plane's width to the texture's true aspect
     const aspect = tex.image.width / tex.image.height;
     mesh.scale.set(aspect, 1, 1);
   });
@@ -47,23 +59,24 @@ const planes = CHARACTERS.map((name, i) => {
   // height = 3 world units, width follows texture aspect via mesh.scale
   const geometry = new THREE.PlaneGeometry(1, 3);
   const mesh = new THREE.Mesh(geometry, material);
-  mesh.userData = { name, baseX: i * SPACING };
-  mesh.position.x = mesh.userData.baseX;
+  mesh.userData = { name, baseX: x, baseY: y };
+  mesh.position.set(x, y, 0);
 
   scene.add(mesh);
   return mesh;
 });
 
 // ---------- Scroll state ----------
-let target = 0;          // where the scroll wants to be
-let current = 0;         // smoothed value actually applied
-let lastInput = performance.now();
+//
+// `scrollX` is the camera's position on the strip. Wheel input nudges
+// `target`, which `scrollX` eases toward each frame. The world stays put;
+// the camera moves through it.
+//
+let target = 0;
+let scrollX = 0;
 
 const SCROLL_SENSITIVITY = 0.0035;
 const SMOOTHING = 0.085;
-
-const IDLE_MS = 2200;     // wait this long with no input before auto-scroll kicks in
-const AUTO_SPEED = 0.012; // base auto-scroll velocity (world units / frame)
 
 window.addEventListener(
   'wheel',
@@ -72,7 +85,6 @@ window.addEventListener(
     // vertical wheels (most mice) and horizontal trackpads alike
     const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
     target += delta * SCROLL_SENSITIVITY;
-    lastInput = performance.now();
   },
   { passive: true },
 );
@@ -81,7 +93,6 @@ window.addEventListener(
 let touchX = null;
 window.addEventListener('touchstart', (e) => {
   touchX = e.touches[0].clientX;
-  lastInput = performance.now();
 }, { passive: true });
 
 window.addEventListener('touchmove', (e) => {
@@ -89,7 +100,6 @@ window.addEventListener('touchmove', (e) => {
   const x = e.touches[0].clientX;
   target += (touchX - x) * 0.01;
   touchX = x;
-  lastInput = performance.now();
 }, { passive: true });
 
 window.addEventListener('touchend', () => { touchX = null; });
@@ -101,27 +111,25 @@ window.addEventListener('resize', () => {
   camera.updateProjectionMatrix();
 });
 
-// ---------- Wrap a value into [-TOTAL/2, TOTAL/2) for seamless looping ----------
-function wrap(v) {
-  const m = ((v % TOTAL) + TOTAL) % TOTAL;
-  return m > TOTAL / 2 ? m - TOTAL : m;
-}
-
 // ---------- Frame loop ----------
+//
+// Move the camera. To make the strip feel infinite, we displace each mesh
+// by ±STRIP_LENGTH so it always sits within [-half, +half] of the camera.
+// Authored x/y is preserved — the mesh just appears in the closest copy
+// of the world to the camera.
+//
+const half = STRIP_LENGTH / 2;
+
 function tick() {
-  const now = performance.now();
-  const idle = now - lastInput;
-
-  // After IDLE_MS of no scroll input, ease into a continuous infinite scroll.
-  if (idle > IDLE_MS) {
-    const ramp = Math.min((idle - IDLE_MS) / 900, 1); // 0 → 1 ease-in
-    target += AUTO_SPEED * ramp;
-  }
-
-  current += (target - current) * SMOOTHING;
+  scrollX += (target - scrollX) * SMOOTHING;
+  camera.position.x = scrollX;
 
   for (const mesh of planes) {
-    mesh.position.x = wrap(mesh.userData.baseX - current);
+    let dx = mesh.userData.baseX - scrollX;
+    dx = ((dx % STRIP_LENGTH) + STRIP_LENGTH) % STRIP_LENGTH;
+    if (dx > half) dx -= STRIP_LENGTH;
+    mesh.position.x = scrollX + dx;
+    mesh.position.y = mesh.userData.baseY;
   }
 
   renderer.render(scene, camera);
