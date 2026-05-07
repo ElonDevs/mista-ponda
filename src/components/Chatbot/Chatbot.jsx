@@ -2,12 +2,13 @@ import React, { useEffect, useRef, useState } from "react";
 import styles from "./Chatbot.module.scss";
 
 const API_BASE =
-  import.meta.env.VITE_CHATBOT_API || "http://localhost:8000";
+  import.meta.env.VITE_CHATBOT_API || "https://mista-ponda-jbl2.vercel.app";
 
 const INITIAL_MESSAGES = [
   {
     role: "bot",
-    content: "Hi! I'm Panda 🐼 — ask me anything about this portfolio.",
+    content:
+      "Rawr~ I'm Mista Ponda 🐼 your AI panda crypto therapist. Say 'Diagnose me' or just vent, my sweet degen hooman 🫂",
   },
 ];
 
