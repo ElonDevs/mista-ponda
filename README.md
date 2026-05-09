@@ -77,7 +77,7 @@ Who’s ready to start their journey? Drop “diagnose me” below and let’s b
 
 $PONDATherapy for your portfolio. Therapy for your soul.
 
-#MistaPonda #DiamondPaws #CryptoTherapy #PONDA #HoldStrong 🐼💎🚀
+
 
 
 
