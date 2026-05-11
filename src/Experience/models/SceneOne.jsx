@@ -4,7 +4,7 @@ import { useKTX2Texture, useIconTexture } from "../utils/ktxLoader";
 import { useFrame } from "@react-three/fiber";
 
 const SOCIAL_ICONS = [
-  { key: "github", texture: "/textures/icons/github.png", url: "https://github.com/Elonmarket/mista-ponda" },
+  { key: "github", texture: "/textures/icons/github.png", url: "https://github.com/Mistaponda/mista-ponda" },
   { key: "x", texture: "/textures/icons/x.png", url: "https://x.com/Mistapondabot" },
   { key: "capsule", texture: "/textures/icons/capsule.png", url: "https://pump.fun/" },
 ];
