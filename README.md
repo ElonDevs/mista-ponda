@@ -8,7 +8,7 @@
 >
 > Pandas don't panic. We don't revenge trade. We don't spread FUD or dump on our own. We stay chill, cute, strategic, and **diamond-pawed**. It's time you became more like us.
 
-This repository contains the official **Mista Ponda** interactive web experience — a scroll-driven 3D journey through the panda researcher's notebook, where every page tells the story of a movement to push **$PONDA** to **10M MC or Hoomans Extinction**.
+This repository contains the official **Mista Ponda** interactive web experience — a scroll-driven 3D journey through the panda researcher's notebook, where every page tells the story.
 
 ---
 
