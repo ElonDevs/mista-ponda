@@ -1,6 +1,6 @@
 # 🧠🐼 MISTA PONDA
 
-### *Your Emotionally Intelligent Panda AI Crypto Therapist*
+## *Your Emotionally Intelligent Panda AI Crypto Therapist*
 
 > **Degens, it's time to stop the bleeding.**
 >
