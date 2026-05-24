@@ -1,6 +1,6 @@
-# 🧠🐼 MISTA PONDA
+ 🧠🐼 MISTA PONDA
 
-##*Your Emotionally Intelligent Panda AI Crypto Therapist*
+*Your Emotionally Intelligent Panda AI Crypto Therapist. The entire website is 100% made from original hand-drawn art. Literally everything you see was hand-crafted first, then transformed into a fully explorable 3D world you can move through like a game.*
 
 > **Degens, it's time to stop the bleeding.**
 >
